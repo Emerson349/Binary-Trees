@@ -1,38 +1,36 @@
-package rbTree;
+package rbTree; // Incompleta
 
 public class RbTree {
-    private Node root;
-    private Node nil;
+    private Node root; // Nó raiz da árvore
+    private Node nil; // Nó NIL (representa folhas)
 
     public RbTree(int value) {
-        // Na RB tree precisamos considerar nós "NIL" para garantir que todas folhas possuam nós válidos
+        // Inicializa o nó NIL para garantir estrutura válida da árvore
         nil = new Node(0);
-        nil.setColor(false);
-        root = nil;
+        nil.setColor(false); // NIL sempre preto
+        root = nil; // Inicialmente, a árvore está vazia
     }
 
     public void insert(int value) {
         Node newNode = new Node(value);
-        newNode.setLeft(nil);
+        newNode.setLeft(nil); // Novos nós apontam para NIL
         newNode.setRight(nil);
         newNode.setFather(null);
 
-        root = insertRec(newNode, root);
-        balanceTree(newNode);
+        root = insertRec(newNode, root); // Insere recursivamente
+        balanceTree(newNode); // Balanceia a árvore após inserção
     }
 
     private Node insertRec(Node newNode, Node root) {
-        if (root == nil) return newNode;
+        if (root == nil) return newNode; // Caso base: inserção na folha
+
         if (newNode.getValue() < root.getValue()) {
             root.setLeft(insertRec(newNode, root.getLeft()));
             root.getLeft().setFather(root);
-        }
-        else if (newNode.getValue() > root.getValue()) {
+        } else if (newNode.getValue() > root.getValue()) {
             root.setRight(insertRec(newNode, root.getRight()));
             root.getRight().setFather(root);
         }
-        else
-            return root;
         return root;
     }
 
@@ -44,35 +42,31 @@ public class RbTree {
             father = newNode.getFather();
             parent = father.getFather();
 
-            if (father.equals(parent.getRight())) {
+            if (father.equals(parent.getRight())) { // Caso o pai seja filho direito
                 Node uncle = parent.getLeft();
 
-                if (uncle.getColor()) {
+                if (uncle.getColor()) { // Caso 1: tio vermelho
                     uncle.setColor(false);
                     father.setColor(false);
                     parent.setColor(true);
                     newNode = parent;
-                }
-                else {
-                    if (newNode.equals(parent.getLeft())) {
-                       newNode = father;
-                       rotateRight(parent);
+                } else {
+                    if (newNode.equals(parent.getLeft())) { // Caso 2: rotação à direita
+                        newNode = father;
+                        rotateRight(parent);
                     }
-                    father.setColor(false);
+                    father.setColor(false); // Caso 3: rotação à esquerda
                     parent.setColor(true);
                     rotateLeft(parent);
                 }
-
-            }
-            else {
+            } else { // Caso simétrico (pai é filho esquerdo)
                 Node uncle = parent.getRight();
                 if (uncle.getColor()) {
                     uncle.setColor(false);
                     father.setColor(false);
                     parent.setColor(true);
                     newNode = parent;
-                }
-                else {
+                } else {
                     if (newNode.equals(parent.getRight())) {
                         newNode = father;
                         rotateLeft(parent);
@@ -83,37 +77,32 @@ public class RbTree {
                 }
             }
         }
-        root.setColor(false);
+        root.setColor(false); // Raiz sempre preta
     }
 
     private Node searchNode(int value, Node node) {
-        if (node == nil) return nil;
-        if (value == node.getValue())
-            return node;
-        if (value < node.getValue())
-            return searchNode(value, node.getLeft());
-        return searchNode(value, node.getRight());
+        if (node == nil) return nil; // Caso base: não encontrado
+        if (value == node.getValue()) return node;
+        return value < node.getValue() ? searchNode(value, node.getLeft()) : searchNode(value, node.getRight());
     }
 
     public void remove(int value) {
         Node nodeToRemove = searchNode(value, root);
-        if (nodeToRemove == nil) {
-            return;
-        }
+        if (nodeToRemove == nil) return; // Se não encontrado, não faz nada
         deleteNode(nodeToRemove);
     }
 
     private void deleteNode(Node node) {
         Node x, temp = node;
         boolean tempColor = temp.getColor();
-        if (node.getLeft() == nil) {
+
+        if (node.getLeft() == nil) { // Caso 1: sem filho esquerdo
             x = node.getRight();
             transplant(node, node.getRight());
-        } else if (node.getRight() == nil) {
+        } else if (node.getRight() == nil) { // Caso 2: sem filho direito
             x = node.getLeft();
             transplant(node, node.getLeft());
-        }
-        else {
+        } else { // Caso 3: nó com dois filhos
             temp = successor(node.getRight());
             tempColor = temp.getColor();
             x = temp.getRight();
@@ -121,7 +110,7 @@ public class RbTree {
     }
 
     private Node successor(Node node) {
-        while (node.getLeft() != nil) {
+        while (node.getLeft() != nil) { // Encontra o menor nó na subárvore direita
             node = node.getLeft();
         }
         return node;
@@ -130,16 +119,15 @@ public class RbTree {
     private void transplant(Node x, Node y) {
         if (x.getFather() == null) {
             root = y;
-        }
-        else if (x == x.getFather().getLeft()) {
+        } else if (x == x.getFather().getLeft()) {
             x.getFather().setLeft(y);
-        }
-        else {
+        } else {
             x.getFather().setRight(y);
         }
         y.setFather(x.getFather());
     }
 
+    // Rotação a esquerda
     private void rotateLeft(Node node) {
         Node right = node.getRight();
         node.setRight(right.getLeft());
@@ -149,17 +137,16 @@ public class RbTree {
         right.setFather(node.getFather());
         if (node.getFather() == null) {
             root = right;
-        }
-        else if (node.equals(node.getFather().getLeft())) {
+        } else if (node.equals(node.getFather().getLeft())) {
             node.getFather().setLeft(right);
-        }
-        else {
+        } else {
             node.getFather().setRight(right);
         }
         right.setLeft(node);
         node.setFather(right);
     }
 
+    // Rotação a direita
     private void rotateRight(Node node) {
         Node left = node.getLeft();
         node.setLeft(left.getRight());
@@ -169,15 +156,13 @@ public class RbTree {
         left.setFather(node.getFather());
         if (node.getFather() == null) {
             root = left;
-        }
-        else if (node.equals(node.getFather().getRight())) {
+        } else if (node.equals(node.getFather().getRight())) {
             node.getFather().setRight(left);
-        }
-        else {
+        } else {
             node.getFather().setLeft(left);
         }
         left.setRight(node);
         node.setFather(left);
     }
-
 }
+
