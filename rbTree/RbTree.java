@@ -5,8 +5,6 @@ package rbTree; // Incompleta
     Email: emerson.henrique.sulpino.araujo@ccc.ufcg.edu.br
     Matrícula: 123210141
     User do GitHub: Emerson349
-
-    Implementação de uma Árvore AVL
 */
 
 public class RbTree {
