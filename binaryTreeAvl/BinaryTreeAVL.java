@@ -8,12 +8,6 @@ package binaryTreeAvl;
 */
 
 public class BinaryTreeAVL {
-    /*
-    Aluno: Emerson Henrique Sulpino de Araújo
-    Email: emerson.henrique.sulpino.araujo@ccc.ufcg.edu.br
-    Matrícula: 123210141
-    User do GitHub: Emerson349
-    */
     private Node root; // Raiz da árvore AVL
 
     public BinaryTreeAVL() {
@@ -196,12 +190,11 @@ public class BinaryTreeAVL {
         }
     }
 
-    // Classe Node com atributos públicos
     public class Node {
-        public Node left;   // Alterado para public
-        public Node right;  // Alterado para public
-        public int height;  // Alterado para public
-        public int value;   // Alterado para public
+        public Node left;
+        public Node right;
+        public int height;
+        public int value;
 
         public Node(int value) {
             this.value = value;

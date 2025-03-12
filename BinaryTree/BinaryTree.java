@@ -8,12 +8,6 @@ package BinaryTree;
 */
 
 public class BinaryTree {
-    /*
-    Aluno: Emerson Henrique Sulpino de Araújo
-    Email: emerson.henrique.sulpino.araujo@ccc.ufcg.edu.br
-    Matrícula: 123210141
-    User do GitHub: Emerson349
-    */
     private Node root; // Nó raiz da árvore
 
     // Método para inserir um valor na árvore
@@ -105,11 +99,10 @@ public class BinaryTree {
         }
     }
 
-    // Classe Node com atributos públicos
     public class Node {
-        public int value;   // Alterado para public
-        public Node left;   // Alterado para public
-        public Node right;  // Alterado para public
+        public int value;
+        public Node left;
+        public Node right;
 
         public Node(int value) {
             this.value = value;

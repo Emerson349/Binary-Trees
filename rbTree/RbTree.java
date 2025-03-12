@@ -8,12 +8,6 @@ package rbTree;
 */
 
 public class RbTree {
-    /*
-    Aluno: Emerson Henrique Sulpino de Araújo
-    Email: emerson.henrique.sulpino.araujo@ccc.ufcg.edu.br
-    Matrícula: 123210141
-    User do GitHub: Emerson349
-    */
     private Node root; // Nó raiz da árvore
     private Node nil; // Nó NIL (representa folhas)
 
@@ -255,19 +249,11 @@ public class RbTree {
         if (node == nil) {
             return;
         }
-
-        // Imprime o nó direito (subárvore direita)
         printTree(node.right, level + 1);
-
-        // Indenta conforme o nível do nó
         for (int i = 0; i < level; i++) {
             System.out.print("    ");
         }
-
-        // Imprime o valor do nó e sua cor
         System.out.println(node.value + " (" + (node.color ? "RED" : "BLACK") + ")");
-
-        // Imprime o nó esquerdo (subárvore esquerda)
         printTree(node.left, level + 1);
     }
 
